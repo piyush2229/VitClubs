@@ -2,63 +2,61 @@
 import express, { urlencoded } from "express";
 import cors from "cors";
 import cookieParser from "cookie-parser";
-import dotenv from "dotenv"; // Correct import for dotenv
+import dotenv from "dotenv";
 import connectDB from "./utils/db.js";
 import userRoute from "./routes/user.route.js";
-import postroute from "./routes/post.route.js";
+import postRoute from "./routes/post.route.js";
 import messageRoute from "./routes/message.route.js";
-import {app,server} from "./socket/socket.js"
+import { app, server } from "./socket/socket.js";
 import path from "path";
+
 // Load environment variables
-dotenv.config(); // Load .env file
-
-
+dotenv.config();
 
 // Server port
-const PORT = process.env.PORT || 3001; // Use PORT from .env or default to 3000
+const PORT = process.env.PORT || 3001;
 
-const __dirname = path.resolve();
-console.log(__dirname);
-
-// Middlewares
-app.use(express.json()); // Parse JSON data
-app.use(cookieParser()); // Parse cookies
-app.use(urlencoded({ extended: true })); // Parse URL-encoded data
-
-
-
+// Middleware
+app.use(express.json());
+app.use(cookieParser());
+app.use(urlencoded({ extended: true }));
 
 // CORS configuration
 const corsOptions = {
-    origin: 'http://localhost:5173', // Allow this origin
-    credentials: true // Allow credentials
+  origin: process.env.CORS_ORIGIN || "http://localhost:5173", // Use origin from .env or default
+  credentials: true,
 };
-
-// Apply CORS middleware
 app.use(cors(corsOptions));
 
+// API routes
+app.use("/api/v1/user", userRoute);
+app.use("/api/v1/post", postRoute);
+app.use("/api/v1/message", messageRoute);
 
-// api routes
-
-app.use("/api/v1/user",userRoute);
-app.use("/api/v1/post",postroute);
-app.use("/api/v1/message",messageRoute);
+// Static file serving (for Vercel or production)
+const __dirname = path.resolve();
+if (process.env.NODE_ENV === "production") {
+  app.use(express.static(path.join(__dirname, "frontend", "dist")));
+  app.get("*", (req, res) => {
+    res.sendFile(path.join(__dirname, "frontend", "dist", "index.html"));
+  });
+}
 
 // Define root route
 app.get("/", (req, res) => {
-    res.status(200).json({
-        message: "I'm coming from the backend",
-        success: true
-    });
+  res.status(200).json({
+    message: "I'm coming from the backend",
+    success: true,
+  });
 });
 
 // Connect to database and start server
-connectDB() // Connect to MongoDB
-    .then(() => {
-        server.listen(PORT, () => {
-            console.log(`Server running on port ${PORT}`);
-        });
-    })
-    .catch((error) => {
-        console.error("Failed to connect to database", error);
+connectDB()
+  .then(() => {
+    server.listen(PORT, () => {
+      console.log(`Server running on port ${PORT}`);
     });
+  })
+  .catch((error) => {
+    console.error("Failed to connect to database", error);
+  });
