@@ -11,10 +11,6 @@
         "src": "/(.*)",
         "dest": "/server.js"
       }
-    ],
-    "ignore": [
-      ".env",
-      "node_modules"
     ]
   }
   
