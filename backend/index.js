@@ -35,10 +35,28 @@ app.use("/api/v1/post", postroute);
 app.use("/api/v1/message", messageRoute);
 
 // Static file serving (for production only)
+// if (process.env.NODE_ENV === "production") {
+//     app.use(express.static(path.join(__dirname, "frontend", "dist")));
+//     app.get("*", (req, res) => {
+//         res.sendFile(path.join(__dirname, "frontend", "dist", "index.html"));
+//     });
+// }
+
+// Replace the production static file serving section with this:
+
 if (process.env.NODE_ENV === "production") {
-    app.use(express.static(path.join(__dirname, "frontend", "dist")));
+    // Go up one level from backend directory to project root, then into frontend/dist
+    const frontendPath = path.join(__dirname, "..", "frontend", "dist");
+    
+    app.use(express.static(frontendPath));
+    
     app.get("*", (req, res) => {
-        res.sendFile(path.join(__dirname, "frontend", "dist", "index.html"));
+        res.sendFile(path.join(frontendPath, "index.html"), (err) => {
+            if (err) {
+                console.error("Error sending file:", err);
+                res.status(500).send("Internal Server Error");
+            }
+        });
     });
 }
 
