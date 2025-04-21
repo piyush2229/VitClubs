@@ -32,9 +32,9 @@ const corsOptions = {
 app.use(cors(corsOptions));
 
 
-app.use("/", (req, res) => {
-    res.send("Hello from the server!");
-});
+// app.use("/", (req, res) => {
+//     res.send("Hello from the server!");
+// });
 
 // API Routes
 app.use("/api/v1/user", userRoute);
