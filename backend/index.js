@@ -29,6 +29,11 @@ const corsOptions = {
 };
 app.use(cors(corsOptions));
 
+
+app.use("/", (req, res) => {
+    res.send("Hello from the server!");
+});
+
 // API Routes
 app.use("/api/v1/user", userRoute);
 app.use("/api/v1/post", postroute);
@@ -65,9 +70,6 @@ app.use((req, res) => {
     res.status(404).json({ error: "Route not found" });
 });
 
-app.user("/", (req, res) => {
-    res.send("Hello from the server!");
-});
 
 // Connect to database and start server
 connectDB()
