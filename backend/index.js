@@ -44,25 +44,29 @@ app.use("/api/v1/message", messageRoute);
 
 // Replace the production static file serving section with this:
 
-if (process.env.NODE_ENV === "production") {
-    // Go up one level from backend directory to project root, then into frontend/dist
-    const frontendPath = path.join(__dirname, "..", "frontend", "dist");
+// if (process.env.NODE_ENV === "production") {
+//     // Go up one level from backend directory to project root, then into frontend/dist
+//     const frontendPath = path.join(__dirname, "..", "frontend", "dist");
     
-    app.use(express.static(frontendPath));
+//     app.use(express.static(frontendPath));
     
-    app.get("*", (req, res) => {
-        res.sendFile(path.join(frontendPath, "index.html"), (err) => {
-            if (err) {
-                console.error("Error sending file:", err);
-                res.status(500).send("Internal Server Error");
-            }
-        });
-    });
-}
+//     app.get("*", (req, res) => {
+//         res.sendFile(path.join(frontendPath, "index.html"), (err) => {
+//             if (err) {
+//                 console.error("Error sending file:", err);
+//                 res.status(500).send("Internal Server Error");
+//             }
+//         });
+//     });
+// }
 
 // Catch-all route for undefined routes
 app.use((req, res) => {
     res.status(404).json({ error: "Route not found" });
+});
+
+app.user("/", (req, res) => {
+    res.send("Hello from the server!");
 });
 
 // Connect to database and start server
