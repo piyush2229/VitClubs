@@ -24,7 +24,10 @@ app.use(urlencoded({ extended: true }));
 
 // CORS configuration
 const corsOptions = {
-    origin: process.env.FRONTEND_URL || "http://localhost:5173",
+    origin: [
+        process.env.FRONTEND_URL || "http://localhost:5173",
+        "https://vit-clubs-eight.vercel.app"
+    ],
     credentials: true,
 };
 app.use(cors(corsOptions));
