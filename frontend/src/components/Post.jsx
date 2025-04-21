@@ -28,7 +28,7 @@ function Post({ post, removePost }) {
   const toggleFollowHandler = async () => {
     try {
       const res = await axios.post(
-        `http://localhost:8001/api/v1/user/followorunfollow/${author._id}`,
+        `https://vitclubs.onrender.com//api/v1/user/followorunfollow/${author._id}`,
         null,
         { withCredentials: true }
       );
@@ -49,7 +49,7 @@ function Post({ post, removePost }) {
 
   const deletePostHandler = async () => {
     try {
-      const res = await axios.delete(`http://localhost:8001/api/v1/post/delete/${postId}`, {
+      const res = await axios.delete(`https://vitclubs.onrender.com//api/v1/post/delete/${postId}`, {
         withCredentials: true,
       });
       if (res.data.success) {
@@ -74,7 +74,7 @@ function Post({ post, removePost }) {
       setLocalLikes(updatedLikes);
 
       const res = await axios.post(
-        `http://localhost:8001/api/v1/post/${postId}/${isLiked ? 'dislike' : 'like'}`,
+        `https://vitclubs.onrender.com//api/v1/post/${postId}/${isLiked ? 'dislike' : 'like'}`,
         null,
         { withCredentials: true }
       );
@@ -98,7 +98,7 @@ function Post({ post, removePost }) {
   
     try {
       const res = await axios.post(
-        `http://localhost:8001/api/v1/post/${postId}/comment`,
+        `https://vitclubs.onrender.com//api/v1/post/${postId}/comment`,
         { text },
         { withCredentials: true }
       );
@@ -121,7 +121,7 @@ function Post({ post, removePost }) {
   const fetchCommentsHandler = async () => {
     setLoadingComments(true);
     try {
-      const res = await axios.get(`http://localhost:8001/api/v1/post/${postId}/comments`, { withCredentials: true });
+      const res = await axios.get(`https://vitclubs.onrender.com//api/v1/post/${postId}/comments`, { withCredentials: true });
       if (res.data.success) {
         setLocalComments(res.data.comments);
         dispatch(updatePostComments({ postId, updatedComments: res.data.comments }));
@@ -151,7 +151,7 @@ function Post({ post, removePost }) {
   // Bookmark Post Handler
   const bookmarkPostHandler = async () => {
     try {
-      const res = await axios.get(`http://localhost:8001/api/v1/post/${postId}/bookmark`, {
+      const res = await axios.get(`https://vitclubs.onrender.com//api/v1/post/${postId}/bookmark`, {
         withCredentials: true
       });
   

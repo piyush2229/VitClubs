@@ -41,7 +41,7 @@ function App() {
   useEffect(() => {
     if (user) {
       // Create a unique socket connection for each user
-      const socketio = io('http://localhost:8001', {
+      const socketio = io('https://vitclubs.onrender.com/', {
         query: {
           userId: user._id
         },
