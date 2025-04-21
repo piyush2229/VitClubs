@@ -25,7 +25,7 @@ app.use(urlencoded({ extended: true }));
 // CORS configuration
 const corsOptions = {
     origin: [
-        process.env.FRONTEND_URL || "https://vitclubs.onrender.com",
+        process.env.FRONTEND_URL || "https://vit-clubs-eight.vercel.app",
     ],
     credentials: true,
 };
