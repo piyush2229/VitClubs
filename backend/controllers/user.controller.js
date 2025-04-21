@@ -80,13 +80,15 @@ export const login = async (req, res) => {
         // Send the cookie with the token and return the user details
         return res.cookie('token', token, {
             httpOnly: true,
-            sameSite: 'strict',
+            secure: true,  // Ensure it's only sent over HTTPS
+            sameSite: 'none', // Cross-origin support
             maxAge: 1 * 24 * 60 * 60 * 1000, // 1 day
-        }).json({
+          }).json({
             message: `Welcome back ${user.username}`,
             success: true,
-            user: userDetails,  // User details excluding password
-        });
+            user: userDetails,
+          });
+          
 
     } catch (error) {
         console.log(error);
@@ -97,7 +99,13 @@ export const login = async (req, res) => {
 
 export const logout= async(_,res)=>{
     try {
-        return res.clearCookie('token',{httpOnly:true,sameSite:'strict',maxAge:0}).json({message:'Logged Out Successfully',success:true});
+        return res.clearCookie('token', {
+            httpOnly: true,
+            sameSite: 'none',  // Same as login
+            secure: true,  // Ensure it's only over HTTPS
+            maxAge: 0
+          }).json({ message: 'Logged Out Successfully', success: true });
+          
     } catch (error) {
         console.log(error);
         res.status(500).json({ message: 'Server Error' });
