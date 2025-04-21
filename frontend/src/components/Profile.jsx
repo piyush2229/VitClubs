@@ -2,11 +2,11 @@ import React, { useState, useEffect } from 'react';
 import { Avatar, AvatarFallback, AvatarImage } from './ui/avatar';
 import { Button } from './ui/button';
 import { Badge } from './ui/badge';
-import { AtSign, Star } from 'lucide-react'; // Add the Star icon
+import { AtSign, Star } from 'lucide-react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import useGetUserProfile from '@/hooks/useGetUserProfile';
-import { setAuthUser } from '@/redux/authSlice';
+import { setAuthUser, setSelectedUser } from '@/redux/authSlice';
 import axios from 'axios';
 import { toast } from 'sonner';
 
@@ -22,7 +22,6 @@ const Profile = () => {
   const { userProfile, user } = useSelector((store) => store.auth);
 
   const isLoggedInUserProfile = user?._id === userProfile?._id;
-
   const [isUserFollowing, setIsUserFollowing] = useState(false);
 
   useGetUserProfile(userId);
@@ -52,7 +51,7 @@ const Profile = () => {
 
     try {
       setLoading(true);
-      const res = await axios.post('https://vitclubs.onrender.com/api/v1/user/profile/edit', formData, {
+      const res = await axios.post('http://localhost:8001/api/v1/user/profile/edit', formData, {
         headers: {
           'Content-Type': 'multipart/form-data',
         },
@@ -109,6 +108,14 @@ const Profile = () => {
     }
   };
 
+  const handleMessageClick = () => {
+    dispatch(setSelectedUser(userProfile)); 
+    setTimeout(() => {
+      navigate('/chat'); 
+    }, 100); // slight delay to allow Redux state update
+  };
+  
+
   return (
     <div className="flex max-w-5xl justify-center mx-auto pl-10">
       <div className="flex flex-col gap-20 p-8">
@@ -136,17 +143,25 @@ const Profile = () => {
                   <Button 
                     variant="secondary" 
                     className="hover:bg-gray-200 h-8"
-                    onClick={() => navigate(`/account/edit`)} // Navigate to edit profile page
+                    onClick={() => navigate(`/account/edit`)}
                   >
                     {loading ? 'Saving...' : 'Edit Profile'}
                   </Button>
                 ) : (
-                  <Button 
-                    className={`h-8 ${isUserFollowing ? 'bg-red-500' : 'bg-[#0095F6]'} hover:bg-[#3192d2]`}
-                    onClick={handleFollowToggle}
-                  >
-                    {isUserFollowing ? 'Unsubscribe' : 'Subscribe'}
-                  </Button>
+                  <div className="flex gap-2">
+                    <Button 
+                      className={`h-8 ${isUserFollowing ? 'bg-red-500' : 'bg-[#0095F6]'} hover:bg-[#3192d2]`}
+                      onClick={handleFollowToggle}
+                    >
+                      {isUserFollowing ? 'Unsubscribe' : 'Subscribe'}
+                    </Button>
+                    <Button 
+                      className="h-8 bg-green-600 hover:bg-green-700"
+                      onClick={handleMessageClick}
+                    >
+                      Message
+                    </Button>
+                  </div>
                 )}
               </div>
               <div className="flex items-center gap-4">
@@ -198,7 +213,6 @@ const Profile = () => {
                     alt="postimage"
                     className="rounded-sm my-2 w-full aspect-square object-cover"
                   />
-                  <div className="absolute inset-0 flex items-center justify-center"></div>
                 </div>
               ))
             ) : (
