@@ -8,7 +8,7 @@ const useGetUserProfile = (userId) => {
     useEffect(() => {
         const fetchUserProfile = async () => {
             try {
-                const res = await axios.get(`https://vitclubs.onrender.com//api/v1/user/${userId}/profile`, { withCredentials: true });
+                const res = await axios.get(`https://vitclubs.onrender.com/api/v1/user/${userId}/profile`, { withCredentials: true });
                 console.log("Response from API:", res.data);  // Log the response data here
                 if (res.data.success) {
                     dispatch(setUserProfile(res.data.user));

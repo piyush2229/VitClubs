@@ -22,7 +22,7 @@ const SearchComponent = () => {
     setResults([]);
   
     try {
-      const response = await axios.get(`https://vitclubs.onrender.com//api/v1/user/search?query=${query}`, {
+      const response = await axios.get(`https://vitclubs.onrender.com/api/v1/user/search?query=${query}`, {
         withCredentials: true // Important for authentication
       });
       

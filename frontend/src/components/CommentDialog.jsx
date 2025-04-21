@@ -15,7 +15,7 @@ const CommentDialog = ({ open, setOpen, postId, postImage, userprofilepicture })
   useEffect(() => {
     const fetchComments = async () => {
       try {
-        const res = await axios.get(`https://vitclubs.onrender.com//api/v1/post/${postId}/comment/all`);
+        const res = await axios.get(`https://vitclubs.onrender.com/api/v1/post/${postId}/comment/all`);
         if (res.data.success) {
           setComments(res.data.comments);
         } else {
@@ -41,7 +41,7 @@ const CommentDialog = ({ open, setOpen, postId, postImage, userprofilepicture })
 
     try {
       const res = await axios.post(
-        `https://vitclubs.onrender.com//api/v1/post/${postId}/comment`,
+        `https://vitclubs.onrender.com/api/v1/post/${postId}/comment`,
         { text },
         { withCredentials: true }
       );
